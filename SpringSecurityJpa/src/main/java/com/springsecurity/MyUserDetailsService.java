@@ -1,17 +1,40 @@
 package com.springsecurity;
 
+import java.util.Optional;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import com.springsecurity.model.User;
+
 @Service
 public class MyUserDetailsService implements UserDetailsService{
 
+	@Autowired
+	UserRepository userRepository;
+	
 	@Override
-	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 		
-		return new MyUserDetails(username);
+		Optional<User> user=userRepository.findByUserName(userName);
+		
+		user.orElseThrow(() -> new UsernameNotFoundException("not found : "+userName));
+		
+		return new MyUserDetails(user.get());
+//		if(null!=user) {
+//			return user.map(MyUserDetails::new).get();
+//		}
+//		else {
+//			System.out.println("user not found : "+userName);
+//			return null;
+//		}
+			
+		
+		
+		
 	}
 
 }
