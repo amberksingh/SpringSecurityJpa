@@ -8,7 +8,7 @@ public class HomeSecurity {
 
 	@GetMapping("/")
 	public String home() {
-		return "<h1>Welcome Bitches</h1>";
+		return "<h1>Welcome Folks</h1>";
 	}
 	
 	@GetMapping("/admin")
